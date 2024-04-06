@@ -1,0 +1,87 @@
+Aim:- Practical of Data collection, Data curation and management for Unstructured data (NoSQL)
+Steps:
+1.
+Download CouchDB: https://couchdb.apache.org/ (Select Option Windows (x64))
+2.
+Install CouchDB. While Installing set Username as bnb and Password as bnb.
+3.
+To Open CouchDB enter following Link on address bar of browser: http://localhost:5984/_utils/#login
+4.
+Enter Username and Password for login.
+5.
+Download R and RStudio: https://posit.co/download/rstudio-desktop/
+6.
+Install R.
+7.
+Install Rstudio.
+R Code with Output:
+> install.packages('sofa')
+> library('sofa')
+> #create connection object
+> x<-Cushion$new(user='bnb', pwd='bnb')
+> x
+> #Write Output Here.
+>
+> #to check whether object created
+> x$ping()
+> #Write Output Here.
+>
+> #create database tycs
+> db_create(x,dbname = 'tycs')
+> #Write Output Here.
+>
+> db_list(x)
+> #Write Output Here.
+>
+> #create json doc
+> doc1 = '{"rollno":"01","name":"ABC","GRADE":"A"}'
+> doc_create(x,doc1,dbname = "tycs",docid = "a_1")
+> #Write Output Here.
+>
+> doc2 = '{"rollno":"02","name":"PQR","GRADE":"A"}'
+> doc_create(x,doc2,dbname = "tycs",docid = "a_2")
+> #Write Output Here.
+>
+> doc3 = '{"rollno":"03","name":"XYZ","GRADE":"B","REMARK":"PASS"}'
+> doc_create(x,doc3,dbname = "tycs",docid = "a_3")
+> #Write Output Here.
+>
+> #CHANGES FEED
+> db_changes(x,"tycs")
+> #Write Output Here.
+>
+> #search for id > null so all docs will display
+> db_query(x,dbname = "tycs", selector = list('_id'=list('$gt'=NULL)))$docs
+>
+> #search for students with grade is A
+> db_query(x,dbname = "tycs",selector = list(GRADE="A"))$docs
+> #Write Output Here.
+>
+> #search for students with remark =pass
+> db_query(x,dbname = "tycs",selector = list(REMARK="PASS"))$docs
+> #Write Output Here.
+>
+> #return only certain fields where rollno>2
+> db_query(x,dbname = "tycs",selector = list(rollno=list('$gt'='02')),fields=c("name","GRADE"))$docs
+> #Write Output Here.
+>
+> #convert the result of a query into a data frame using jsonlite
+> install.packages(“jsonlite”)
+> library("jsonlite")
+> res = db_query(x,dbname = "tycs",selector = list('_id'=list('$gt'=NULL)),fields=c("name","rollno","GRADE","REMARK"),as="json")
+> #display json doc
+> fromJSON(res)$docs
+> #Write Output Here.
+>
+> doc_delete(x,dbname = "tycs",docid = "a_2")
+> #Write Output Here.
+>
+> doc_get(x,dbname = "tycs",docid = "a_2")
+> #Write Output Here.
+>
+> doc2 = '{"name":"Sdrink","beer":"TEST","note":"yummy","note2":"yay"}'
+> doc_update(x,dbname = "ty",doc=doc2,docid="a_3",rev = "3-b1fb56db955b142c6efd3b3c52fe9e1b")
+> #Write Output Here.
+>
+> doc3 = '{"rollno":"01", "name":"UZMA", "GRADE":"A"}'
+> doc_update(x,dbname = "tycs",doc=doc3,docid = "a_1",rev = "1-be7c98bddf8ea7c46f4f401ff387593d")

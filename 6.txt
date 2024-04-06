@@ -1,0 +1,31 @@
+
+AIM: Practical of Simple/Multiple Linear Regression
+
+Theory: In statistics, linear regression is a linear approach to modelling the relationship between a scalar response (or dependent variable) and one or more explanatory variables (or independent variables). The case of one explanatory variable is called simple linear regression. For more than one explanatory variable, the process is called multiple linear regression. This term is distinct from multivariate linear regression, where multiple correlated dependent variables are predicted, rather than a single scalar variable. In linear regression, the relationships are modelled using linear predictor functions whose unknown model parameters are estimated from the data. Such models are called linear models. Most commonly, the conditional mean of the response given the values of the explanatory variables (or predictors) is assumed to be an affine function of those values; less commonly, the conditional median or some other quintile is used. Like all forms of regression analysis, linear regression focuses on the conditional probability distribution of the response given the values of the predictors, rather than on the joint probability distribution of all of these variables, which is the domain of multivariate analysis.
+To summarise, the iris dataset consists of four measurements (length and width of the petals and sepals) of one hundred and fifty Iris flowers from three species:
+You will have noticed on the iris dataset, that petal length and petal width are highly correlated over all species. How about running a linear regression? First of all, using the "least squares fit" function lsfit gives this:
+
+> lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients
+> plot(iris$Petal.Length, iris$Petal.Width, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)], main="Iris Data", xlab="Petal length", ylab="Petal width")
+> abline(lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients, col="black")
+> lm(Petal.Width ~ Petal.Length, data=iris)$coefficients
+> plot(iris$Petal.Length, iris$Petal.Width, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)], main="Iris Data", xlab="Petal length", ylab="Petal width")
+> abline(lm(Petal.Width ~ Petal.Length, data=iris)$coefficients, col="black")
+> summary(lm(Petal.Width ~ Petal.Length, data=iris))
+> plot(iris$Sepal.Width, iris$Sepal.Length, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)], main="Iris Data", xlab="Sepal Width", ylab="Sepal Length")
+> abline(lm(Sepal.Length ~ Sepal.Width, data=iris)$coefficients, col="black")
+> summary(lm(Sepal.Length ~ Sepal.Width, data=iris))
+> plot(iris$Sepal.Width, iris$Sepal.Length, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)], main="Iris Data", xlab="Petal length", ylab="Sepal length") 
+> abline(lm(Sepal.Length ~ Sepal.Width, data=iris)$coefficients, col="black") 
+> abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="setosa"),])$coefficients, col="red") 
+> abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="versicolor"),])$coefficients, col="green3") 
+> abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="virginica"),])$coefficients, col="blue")
+> lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="setosa"),])$coefficients
+> lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="versicolor"),])$coefficients
+> lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="virginica"),])$coefficients
+> lm(Sepal.Length ~ Sepal.Width:Species + Species - 1, data=iris)$coefficients
+> summary(lm(Sepal.Length ~ Sepal.Width:Species + Species - 1, data=iris))
+> summary(step(lm(Sepal.Length ~ Sepal.Width * Species, data=iris)))
+> lm(Sepal.Length ~ Sepal.Width:Species + Species - 1, data=iris)$coefficients
+> lm(Sepal.Length ~ Sepal.Width:Species + Species, data=iris)$coefficients
+

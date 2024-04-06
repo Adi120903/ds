@@ -1,0 +1,40 @@
+AIM: Practical of Decision Tree. 
+
+Theory: A decision tree is a decision support tool that uses a tree-like model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility. It is one way to display an algorithm that only contains conditional control statements. Decision trees are commonly used in operations research, specifically in decision analysis, to help identify a strategy most likely to reach a goal, but are also a popular tool in machine learning.  Used for classifying data by partitioning attribute space.  Tries to find axis-parallel decision boundaries for specified optimality criteria.  Leaf nodes contain class labels, representing classification decisions.  Keeps splitting nodes based on split criterion, such as GINI index, information gain or entropy.  Pruning necessary to avoid over fitting.
+
+Decision Tree using R:
+> mydata<-data.frame(iris) 
+> attach(mydata) 
+> install.packages("rpart")
+> library(rpart) 
+> model<-rpart(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, 
++ data=mydata, 
++ method="class") 
+> plot(model) 
+> text(model,use.n=TRUE,all=TRUE,cex=0.8)
+> install.packages("tree") 
+> library(tree) 
+> model1<-tree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, 
++ data=mydata, 
++ method="class", 
++ split="gini") 
+> plot(model1) 
+> text(model1,all=TRUE,cex=0.6)
+> install.packages("party") 
+> library(party)
+> model2<-ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, 
++ data=mydata) 
+> plot(model2)
+> library(tree) 
+> mydata<-data.frame(iris) 
+> attach(mydata)
+> model1<-tree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, 
++ data=mydata, 
++ method="class", 
++ control = tree.control(nobs = 150, mincut = 10)) 
+> plot(model1) 
+> text(model1,all=TRUE,cex=0.6)
+> predict(model1,iris)
+> model2<-ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, 
++ data = mydata, controls = ctree_control(maxdepth=2)) 
+> plot(model2)

@@ -1,0 +1,107 @@
+AIM: Practical of Clustering.
+Theory: This dataset is very commonly used for Overview of data, Data Visualization and Clustering model. It includes three iris species with 50 samples each as well as some properties about each flower. One flower species is linearly separable from the other two, but the other two are not linearly separable from each other. The given columns in this dataset are: 
+i> Id 
+ii> SepalLength (Cm) 
+iii>SepalWidth (Cm) 
+iv> PetalLength (Cm) 
+v> PetalWidth (Cm) 
+vi> Species
+
+> install.packages("ggplot2") 
+> library(ggplot2) 
+> scatter <- ggplot(data=iris, aes(x = Sepal.Length, y = Sepal.Width))
+> scatter + geom_point(aes(color=Species, shape=Species)) +
++ theme_bw()+ 
++ xlab("Sepal Length") + ylab("Sepal Width") + 
++ ggtitle("Sepal Length-Width")
+
+
+> ggplot(data=iris, aes(Sepal.Length, fill = Species))+ 
++ theme_bw()+ 
++ geom_density(alpha=0.25)+ 
++ labs(x = "Sepal.Length", title="Species vs Sepal Length")
+> vol <- ggplot(data=iris, aes(x = Sepal.Length))
+
+> vol + stat_density(aes(ymax = ..density.., ymin = -..density.., 
++ fill = Species, color = Species), 
++ geom = "ribbon", position = "identity") + 
++ facet_grid(. ~ Species) + coord_flip() + theme_bw()+labs(x = "Sepal Length", title="Species vs Sepal Length")
+
+> vol <- ggplot(data=iris, aes(x = Sepal.Width)) 
+> vol + stat_density(aes(ymax = ..density.., ymin = -..density.., 
++ fill = Species, color = Species), 
++ geom = "ribbon", position = "identity") + 
++ facet_grid(. ~ Species) + coord_flip() + theme_bw()+labs(x = "Sepal Width", title="Species vs Sepal Width")
+
+
+Clustering Data :: Method-1
+> irisData <- iris[,1:4] 
+> totalwSS<-c()
+
+> for (i in 1:15) 
++ { 
++ clusterIRIS <- kmeans(irisData, centers=i) 
++ totalwSS[i]<-clusterIRIS$tot.withinss 
++ }
+
+> plot(x=1:15,	 # x= No of clusters, 1 to 15 
++ y=totalwSS, 	 # tot_wss for each 
++ type="b", 	 # Draw both points as also connect them 
++ xlab="Number of Clusters", 
++ ylab="Within groups sum-of-squares")
+
+
+Clustering Data :: Method-2 
+Using NbClust - Uses huge no of cluster suitability measuring critera
+> install.packages("NbClust") 
+> library(NbClust)
+> par(mar = c(2,2,2,2))
+> nb <- NbClust(irisData, method = "kmeans")
+
+> hist(nb$Best.nc[1,], breaks = 15, main="Histogram for Number of Clusters")
+
+
+Clustering Data :: Method-3 
+calinski criterion is similar to finding ratio of between-cluster-variance/within-cluster variance 
+> install.packages("vegan") 
+> library(vegan)
+> modelData <- cascadeKM(irisData, 1, 10, iter = 100) 
+> plot(modelData, sortg = TRUE)
+> modelData$results[2,]
+> which.max(modelData$results[2,])
+
+Clustering Data with Silhoutte plot :: Method-4
+> library(cluster) 
+> cl <- kmeans(iris[,-5], 2)
+> dis <- dist(iris[,-5])^2
+> sil = silhouette (cl$cluster, dis)
+> plot(sil, main = "Clustering Data with Silhoutte plot using 2 Clusters", col = c("cyan", "blue"))
+> library(cluster) 	# For silhoutte() 
+> cl <- kmeans(iris[,-5], 8)
+> dis <- dist(iris[,-5])^2
+> sil = silhouette (cl$cluster, dis)
+> plot(sil, main = "Clustering Data with Silhoutte plot using 8 Clusters", col = c("cyan", "blue", "orange", "yellow", "red", "gray", "green", "maroon"))
+
+
+Analyze Clustering Tendency
+
+> install.packages("factoextra")
+> library(factoextra)
+> install.packages("clustertend")
+> library(clustertend)
+> genx<-function(x){ 
++ runif(length(x), min(x), (max(x))) 
++ }
+> random_df <- apply(iris[,-5], 2, genx) 
+> random_df <- as.data.frame(random_df)
+
+> iris[,-5] <- scale(iris[,-5]) # By default, center = T, scale = T 
+> random_df <- scale(random_df)
+> res <- get_clust_tendency(iris[,-5], 
++ n = nrow(iris) -1 , 
++ graph = FALSE)
+> res$hopkins_stat
+> hopkins(iris[,-5], n = nrow(iris) -1)
+> res <- get_clust_tendency(random_df, n = nrow(random_df)-1, 
++ graph = FALSE) 
+> res$hopkins_stat

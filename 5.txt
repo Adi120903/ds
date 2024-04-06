@@ -1,0 +1,36 @@
+AIM: Practical of Time-series forecasting.
+
+Theory:
+Making predictions about the future is called extrapolation in the classical statistical handling of time series data.
+More modern fields focus on the topic and refer to it as time series forecasting.
+Forecasting involves taking models fit on historical data and using them to predict future observations.
+Descriptive models can borrow for the future (i.e. to smooth or remove noise), they only seek to best describe the data.
+An important distinction in forecasting is that the future is completely unavailable and must only be estimated from what has already happened. The skill of a time series forecasting model is determined by its performance at predicting the future. This is often at the expense of being able to explain why a specific prediction was made, confidence intervals and even better understanding the underlying causes behind the problem.
+Exploration of Time Series Data in R:
+Here we’ll learn to handle time series data on R. Our scope will be restricted to data exploring in a time series type of data set and not go to building time series models.
+I have used an inbuilt data set of R called AirPassengers. The dataset consists of monthly totals of international airline passengers, 1949 to 1960.
+Loading the Data Set
+Following is the code which will help you load the data set and spill out a few top level metrics.
+
+> data(AirPassengers)
+> class(AirPassengers)
+> start(AirPassengers)
+> end(AirPassengers)
+> frequency(AirPassengers)
+> summary(AirPassengers)
+> plot(AirPassengers)
+> abline(reg=lm(AirPassengers~time(AirPassengers)))
+> cycle(AirPassengers)
+> plot(aggregate(AirPassengers,FUN=mean))
+Assistant Professor-Sumit R. Mishra
+> boxplot(AirPassengers~cycle(AirPassengers))
+
+
+Auto – correlation Function(ACF): ACF is a plot of total correlation between different lag functions.
+Following are the ACF plots for the series :
+
+> acf(log(AirPassengers))
+> acf(diff(log(AirPassengers)))
+> (fit <- arima(log(AirPassengers), c(0, 1, 1),seasonal = list(order = c(0, 1, 1), period = 12)))
+> pred <- predict(fit, n.ahead = 10*12)
+> ts.plot(AirPassengers,2.718^pred$pred, log = "y", lty = c(1,3))
