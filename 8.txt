@@ -1,0 +1,87 @@
+Aim:- Practical of Hypothesis testing
+Small Sample Test:
+a)
+t – test for single population mean:
+Example 1:-
+The random sample of 10 boys had following IQ 70, 120, 110, 101, 88, 83, 95, 89, 107, 125. Do this data support the assumption that population mean IQ is 100?
+R – Code:-
+H0: Population mean IQ is 100.
+H1:Population mean IQ is not 100. 
+> x=c(70, 120, 110, 101, 88, 83, 95, 89, 107, 125) 
+> Result=t.test(x) 
+> print(Result)
+
+
+b)
+Difference between two sample means:
+Example 1:-
+Two groups of 10 subjects each were given the digit span subtest from the Wechsler Adult Intelligence Scale. One group consisted of regular smokers of marijuana, while the other group consisted of nonsmokers. The scores are given below:
+Nonsmokers
+22
+21
+17
+20
+17
+23
+20
+22
+21
+Smokers
+16
+20
+14
+21
+20
+18
+13
+15
+17
+21
+Test the hypothesis that both there is no significant effect on score due to smoking.
+R – Code:
+H0: There is no significant effect on score due to smoking
+H1: There is no significant effect on score due to smoking 
+> nonsmokers=c(18,22,21,17,20,17,23,20,22,21) 
+> smokers=c(16,20,14,21,20,18,13,15,17,21) 
+> Result=t.test(nonsmokers,smokers) 
+> print(Result)
+
+
+c)
+Paired t – test:
+Example 1:-
+An IQ test was administrated to 5 persons before and after they were trained. The results are given below:
+Before
+110
+120
+123
+132
+125
+After
+120
+118
+125
+136
+121
+R – Code:
+H0:
+H1: 
+> x=c(110,120,123,132,125) 
+> y=c(120,118,125,136,121) 
+> Result=t.test(x,y,paired = TRUE,alternative = "less") 
+> print(Result)
+
+
+Example 2:-
+School athletics has taken a new instructor, and want to test the effectiveness of the new type of training proposed by comparing the average times of 10 runners in the 100 meters. The time in seconds before and after training for each athlete are given below:
+Before Training
+12.9, 13.5, 12.8, 15.6, 17.2, 19.2, 12.6, 15.3, 14.4, 11.3
+After Training
+12.0, 12.2, 11.2, 13.0, 15.0, 15.8, 12.2, 13.4, 12.9, 11.0
+R – Code:-
+H0:
+H1: 
+> x=c(12.9, 13.5, 12.8, 15.6, 17.2, 19.2, 12.6, 15.3, 14.4, 11.3) 
+> y=c(12.0, 12.2, 11.2, 13.0, 15.0, 15.8, 12.2, 13.4, 12.9, 11.0) 
+> Result=t.test(x,y,paired = TRUE,alternative = "greater") 
+> print(Result)
